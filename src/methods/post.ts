@@ -41,5 +41,4 @@ export default async function methodPost(
   users.push(newUser);
 
   returnData(res, newUser, 201);
-  
 }

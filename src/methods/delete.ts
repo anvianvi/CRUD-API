@@ -16,11 +16,14 @@ export default function methodDelete(
   }
 
   const userIndex = users.findIndex((u) => u.id === userId);
+
   if (userIndex === -1) {
     returnData(res, 'User not found', 404);
-  } else {
-    users.splice(userIndex, 1);
-    res.statusCode = 204;
-    res.end();
+    return;
   }
+
+  users.splice(userIndex, 1);
+
+  res.statusCode = 204;
+  res.end();
 }

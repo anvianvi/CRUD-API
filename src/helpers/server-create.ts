@@ -1,8 +1,12 @@
-import returnData from './helpers/return-data';
-import User from './interfaces';
-import methodGet from './methods/get';
-import { Worker } from 'node:cluster';
 import http, { IncomingMessage, ServerResponse } from 'node:http';
+import { Worker } from 'node:cluster';
+import User from '../interfaces';
+
+import methodPut from '../methods/put';
+import methodPost from '../methods/post';
+import methodDelete from '../methods/delete';
+import methodGet from '../methods/get';
+import returnData from './return-data';
 
 export default function serverCreate(
   port: number,
@@ -21,15 +25,15 @@ export default function serverCreate(
           case 'GET':
             methodGet(url, res, users);
             break;
-          // case 'POST':
-          //   await methodPost(url, req, res, users);
-          //   break;
-          // case 'PUT':
-          //   await methodPut(url, req, res, users);
-          //   break;
-          // case 'DELETE':
-          //   methodDelete(url, res, users);
-          //   break;
+          case 'POST':
+            await methodPost(url, req, res, users);
+            break;
+          case 'PUT':
+            await methodPut(url, req, res, users);
+            break;
+          case 'DELETE':
+            methodDelete(url, res, users);
+            break;
           default:
             returnData(res, 'Endpoint not found', 404);
         }

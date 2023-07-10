@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { env } from 'node:process';
 import User from './interfaces';
-import serverCreate from './server-create';
+import serverCreate from './helpers/server-create';
 
 dotenv.config();
 
