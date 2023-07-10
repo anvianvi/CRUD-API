@@ -1,6 +1,6 @@
-import cluster, { Worker } from 'node:cluster';
-import { env } from 'node:process';
-import { availableParallelism } from 'node:os';
+import cluster, { Worker } from 'cluster';
+import { env } from 'process';
+import { cpus } from 'os';
 import dotenv from 'dotenv';
 import User from './interfaces';
 import serverCreate from './helpers/server-create';
@@ -8,7 +8,7 @@ import serverCreate from './helpers/server-create';
 dotenv.config();
 const port = Number(env.PORT || 4000);
 
-const numWorkers = availableParallelism();
+const numWorkers = cpus().length;
 
 if (cluster.isPrimary) {
   const workers: Worker[] = [];
