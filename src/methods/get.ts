@@ -3,7 +3,11 @@ import User from '../interfaces';
 import returnData from '../helpers/return-data';
 import isValidUUID from '../helpers/uuid-validator';
 
-export default function methodGet(url: string, res: ServerResponse, users: User[]) {
+export default function methodGet(
+  url: string,
+  res: ServerResponse,
+  users: User[],
+) {
   if (url === '/api/users') {
     returnData(res, users, 200);
     return;

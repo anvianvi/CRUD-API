@@ -3,7 +3,11 @@ import isValidUUID from '../helpers/uuid-validator';
 import User from 'interfaces';
 import { ServerResponse } from 'node:http';
 
-export default function methodDelete(url: string, res: ServerResponse, users: User[]) {
+export default function methodDelete(
+  url: string,
+  res: ServerResponse,
+  users: User[],
+) {
   const userId = url.substring(url.lastIndexOf('/') + 1);
 
   if (!isValidUUID(userId)) {

@@ -7,7 +7,7 @@ export default async function methodPut(
   url: string,
   req: IncomingMessage,
   res: ServerResponse,
-  users: User[]
+  users: User[],
 ) {
   const userId = url.split('/').pop();
   const isValid = /\/api\/users\/([^/]+)/.test(url);
