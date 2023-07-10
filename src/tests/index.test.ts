@@ -22,7 +22,7 @@ const defaultUser = {
   hobbies: ['test1', 'test2'],
 };
 
-describe('API Tests', () => {
+describe('My test pack for api', () => {
   let server: http.Server;
   let users: User[];
 
@@ -61,7 +61,7 @@ describe('API Tests', () => {
     server.close();
   });
 
-  test('Get all records with a GET api/users request (an empty array is expected)', (done) => {
+  test('Get all records with a GET api/users request', (done) => {
     const options = getOptions('GET');
     const req = http.request(options, (res: http.IncomingMessage) => {
       expect(res.statusCode).toBe(200);
