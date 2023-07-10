@@ -1,16 +1,12 @@
 import returnData from '../helpers/return-data';
-import isValidUUID from '../helpers/uuid-validater';
+import isValidUUID from '../helpers/uuid-validator';
 import User from 'interfaces';
 import { ServerResponse } from 'node:http';
 
-export default function methodDelete(
-  url: string,
-  res: ServerResponse,
-  users: User[],
-) {
-  const userId = url.split('/').pop();
-  const isValid = /\/api\/users\/([^/]+)/.test(url);
-  if (!isValid || !isValidUUID(userId)) {
+export default function methodDelete(url: string, res: ServerResponse, users: User[]) {
+  const userId = url.substring(url.lastIndexOf('/') + 1);
+
+  if (!isValidUUID(userId)) {
     returnData(res, 'Invalid Data', 400);
     return;
   }

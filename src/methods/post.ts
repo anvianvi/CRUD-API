@@ -1,7 +1,7 @@
-import returnData from '../helpers/return-data';
-import User from '../interfaces';
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { v4 as uuidv4 } from 'uuid';
+import returnData from '../helpers/return-data';
+import User from '../interfaces';
 
 export default async function methodPost(
   url: string,
@@ -13,6 +13,7 @@ export default async function methodPost(
     returnData(res, 'Invalid Data', 400);
     return;
   }
+
   let requestBody = '';
 
   await new Promise<void>((resolve) => {
@@ -31,6 +32,7 @@ export default async function methodPost(
     returnData(res, 'Missing required fields', 400);
     return;
   }
+
   const newUser: User = {
     id: uuidv4(),
     username,

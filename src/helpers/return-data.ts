@@ -6,12 +6,11 @@ export default function returnData(
   message: string | User | User[],
   code: number,
 ) {
-  res.statusCode = code;
-  res.setHeader('Content-Type', 'application/json');
+  const data = typeof message === 'string' ? { message } : message;
 
-  res.end(
-    JSON.stringify(
-      typeof message === 'string' ? { message: message } : message,
-    ),
-  );
+  res.writeHead(code, {
+    'Content-Type': 'application/json',
+  });
+
+  res.end(JSON.stringify(data));
 }

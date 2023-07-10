@@ -1,16 +1,17 @@
-import { IncomingMessage, ServerResponse } from 'node:http';
+import { IncomingMessage, ServerResponse } from 'http';
 import User from '../interfaces';
 import returnData from '../helpers/return-data';
-import isValidUUID from '../helpers/uuid-validater';
+import isValidUUID from '../helpers/uuid-validator';
 
 export default async function methodPut(
   url: string,
   req: IncomingMessage,
   res: ServerResponse,
-  users: User[],
+  users: User[]
 ) {
   const userId = url.split('/').pop();
   const isValid = /\/api\/users\/([^/]+)/.test(url);
+
   if (!userId || !isValid || !isValidUUID(userId)) {
     returnData(res, 'Invalid Data', 400);
     return;
