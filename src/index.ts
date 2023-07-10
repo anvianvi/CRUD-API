@@ -1,42 +1,10 @@
-export default function serverCreate(
-  port: number,
-  users: User[],
-  worker?: Worker,
-): void {
-  const server = http.createServer(
-    async (req: IncomingRequest, res: ServerResponse) => {
-      try {
-        const { method, url } = req;
-        if (typeof url !== 'string') {
-          returnData(res, 'Invalid Data', 400);
-          return;
-        }
-        switch (method) {
-          case 'GET':
-            methodGet(url, res, users);
-            break;
-          case 'POST':
-            await methodPost(url, req, res, users);
-            break;
-          case 'PUT':
-            await methodPut(url, req, res, users);
-            break;
-          case 'DELETE':
-            methodDelete(url, res, users);
-            break;
-          default:
-            returnData(res, 'Endpoint not found', 404);
-        }
-        if (worker) {
-          worker.send(JSON.stringify(users));
-        }
-      } catch {
-        returnData(res, 'Server Error', 500);
-      }
-    },
-  );
+import dotenv from 'dotenv';
+import { env } from 'node:process';
+import User from 'interfaces';
+import serverCreate from 'server-create';
 
-  server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-  });
-}
+dotenv.config();
+
+const port = Number(env.PORT || 4000);
+const users: User[] = [];
+serverCreate(port, users);
