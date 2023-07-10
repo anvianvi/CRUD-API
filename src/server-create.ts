@@ -1,6 +1,6 @@
-import returnData from 'helpers/return-data';
-import User from 'interfaces';
-import methodGet from 'methods/get';
+import returnData from './helpers/return-data';
+import User from './interfaces';
+import methodGet from './methods/get';
 import { Worker } from 'node:cluster';
 import http, { IncomingMessage, ServerResponse } from 'node:http';
 

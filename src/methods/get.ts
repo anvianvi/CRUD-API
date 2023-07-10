@@ -1,7 +1,7 @@
 import { ServerResponse } from 'node:http';
-import User from 'interfaces';
-import returnData from 'helpers/return-data';
-import isValidUUID from 'helpers/uuid-validater';
+import User from '../interfaces';
+import returnData from '../helpers/return-data';
+import isValidUUID from '../helpers/uuid-validater';
 
 export default function methodGet(
   url: string,
