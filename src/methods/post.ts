@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { v4 as uuidv4 } from 'uuid';
 import returnData from '../helpers/return-data';
-import User from '../interfaces';
+import { User } from 'interfaces';
 
 export default async function methodPost(
   url: string,

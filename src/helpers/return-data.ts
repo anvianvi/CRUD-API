@@ -1,5 +1,5 @@
 import { ServerResponse } from 'node:http';
-import User from '../interfaces';
+import { User } from '../interfaces';
 
 export default function returnData(
   response: ServerResponse,

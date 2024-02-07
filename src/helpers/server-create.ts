@@ -1,6 +1,6 @@
 import http, { IncomingMessage, ServerResponse } from 'node:http';
 import { Worker } from 'node:cluster';
-import User from '../interfaces';
+import { User } from '../interfaces';
 
 import methodPut from '../methods/put';
 import methodPost from '../methods/post';

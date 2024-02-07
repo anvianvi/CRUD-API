@@ -1,12 +1,12 @@
 import * as http from 'http';
 import { RequestOptions } from 'http';
 import { ServerResponse } from 'http';
-import User from '../interfaces';
 import { v4 as uuidv4 } from 'uuid';
 import methodGet from '../methods/get';
 import methodPost from '../methods/post';
 import methodPut from '../methods/put';
 import methodDelete from '../methods/delete';
+import { User } from 'interfaces';
 
 const getOptions = (method: string, id?: string): RequestOptions => {
   return {

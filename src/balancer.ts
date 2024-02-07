@@ -2,8 +2,8 @@ import cluster, { Worker } from 'cluster';
 import { env } from 'process';
 import { cpus } from 'os';
 import dotenv from 'dotenv';
-import User from './interfaces';
 import serverCreate from './helpers/server-create';
+import { User } from 'interfaces';
 
 dotenv.config();
 const port = Number(env.PORT || 4000);
