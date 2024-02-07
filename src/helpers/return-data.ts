@@ -2,15 +2,15 @@ import { ServerResponse } from 'node:http';
 import User from '../interfaces';
 
 export default function returnData(
-  res: ServerResponse,
+  response: ServerResponse,
   message: string | User | User[],
   code: number,
 ) {
   const data = typeof message === 'string' ? { message } : message;
 
-  res.writeHead(code, {
+  response.writeHead(code, {
     'Content-Type': 'application/json',
   });
 
-  res.end(JSON.stringify(data));
+  response.end(JSON.stringify(data));
 }
