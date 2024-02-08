@@ -15,33 +15,30 @@ export default function serverCreate(
 ): void {
   const server = http.createServer(
     async (req: IncomingMessage, res: ServerResponse) => {
+      const { method, url } = req;
+      if (typeof url !== 'string') {
+        return returnData(res, 'Invalid Data', 400);
+      }
       try {
-        const { method, url } = req;
-        if (typeof url !== 'string') {
-          returnData(res, 'Invalid Data', 400);
-          return;
-        }
         switch (method) {
           case 'GET':
-            methodGet(url, res, users);
-            break;
+            return methodGet(url, res, users);
           case 'POST':
-            await methodPost(url, req, res, users);
-            break;
+            return await methodPost(url, req, res, users);
           case 'PUT':
-            await methodPut(url, req, res, users);
-            break;
+            return await methodPut(url, req, res, users);
           case 'DELETE':
-            methodDelete(url, res, users);
-            break;
+            return methodDelete(url, res, users);
           default:
-            returnData(res, 'Endpoint not found', 404);
+            return returnData(res, 'Endpoint not found', 404);
         }
+      } catch (error) {
+        console.error(error);
+        return returnData(res, 'Server Error', 500);
+      } finally {
         if (worker) {
           worker.send(JSON.stringify(users));
         }
-      } catch {
-        returnData(res, 'Server Error', 500);
       }
     },
   );
