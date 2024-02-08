@@ -8,22 +8,19 @@ export default function methodDelete(
   res: ServerResponse,
   users: User[],
 ) {
-  const userId = url.substring(url.lastIndexOf('/') + 1);
+  const userId = url.split('/').pop();
 
   if (!isValidUUID(userId)) {
-    returnData(res, 'Invalid Data', 400);
-    return;
+    return returnData(res, 'Invalid Data', 400);
   }
 
-  const userIndex = users.findIndex((u) => u.id === userId);
+  const userIndex = users.findIndex((user) => user.id === userId);
 
   if (userIndex === -1) {
-    returnData(res, 'User not found', 404);
-    return;
+    return returnData(res, 'User not found', 404);
   }
 
-  users.splice(userIndex, 1);
+  users = users.filter((user) => user.id !== userId);
 
-  res.statusCode = 204;
-  res.end();
+  return returnData(res, 'User deleted successfully', 204);
 }
