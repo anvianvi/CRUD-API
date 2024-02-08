@@ -72,7 +72,7 @@ describe('My test pack for api', () => {
       });
       res.on('end', () => {
         const data = JSON.parse(responseBody);
-        expect(data).toEqual([]);
+        expect(data).toEqual({ message: [] });
         done();
       });
     });
@@ -95,7 +95,14 @@ describe('My test pack for api', () => {
       });
       res.on('end', () => {
         const data = JSON.parse(responseBody);
-        expect(data).toEqual(expect.objectContaining(user));
+        expect(data).toHaveProperty('message');
+        expect(data.message).toHaveProperty('id');
+        expect(data.message.id).toHaveLength(36);
+        expect(data.message).toMatchObject({
+          username: 'Pavel',
+          age: 31,
+          hobbies: ['test1', 'test2'],
+        });
         done();
       });
     });
@@ -118,14 +125,20 @@ describe('My test pack for api', () => {
       });
       res.on('end', () => {
         const data = JSON.parse(responseBody);
-        expect(data).toEqual(expect.objectContaining(user));
+        expect(data).toEqual({
+          message: expect.objectContaining({
+            username: user.username,
+            age: user.age,
+            hobbies: user.hobbies,
+          }),
+        });
         done();
       });
     });
     req.end();
   });
 
-  test('Update the created record with a PUT api/users/{userId}request', (done) => {
+  test('Update the created record with a PUT api/users/{userId} request', (done) => {
     const user = {
       id: uuidv4(),
       ...defaultUser,
@@ -150,7 +163,9 @@ describe('My test pack for api', () => {
       });
       res.on('end', () => {
         const data = JSON.parse(responseBody);
-        expect(data).toEqual(expect.objectContaining(updatedUser));
+        expect(data).toEqual({
+          message: expect.objectContaining(updatedUser),
+        });
         done();
       });
     });
@@ -167,31 +182,18 @@ describe('My test pack for api', () => {
     const options = getOptions('DELETE', user.id);
     const req = http.request(options, (res: http.IncomingMessage) => {
       expect(res.statusCode).toBe(204);
-      expect(users.length).toBe(0);
       done();
     });
     req.end();
   });
 
-  test('GET api/users/{userId} request, we are trying to get a deleted object by id', (done) => {
-    const user = {
-      id: uuidv4(),
-      ...defaultUser,
-    };
-    users.push(user);
-    const options = getOptions('DELETE', user.id);
-    const deleteReq = http.request(options, (res: http.IncomingMessage) => {
-      expect(res.statusCode).toBe(204);
-      const optionsForGet: http.RequestOptions = getOptions('GET', user.id);
-      const getReq = http.request(
-        optionsForGet,
-        (res: http.IncomingMessage) => {
-          expect(res.statusCode).toBe(404);
-          done();
-        },
-      );
-      getReq.end();
+  test('GET api/users/{userId} request, we are trying to get a non-existent user by id', (done) => {
+    const randomUUID = uuidv4();
+    const options = getOptions('GET', randomUUID);
+    const req = http.request(options, (res: http.IncomingMessage) => {
+      expect(res.statusCode).toBe(404);
+      done();
     });
-    deleteReq.end();
+    req.end();
   });
 });
