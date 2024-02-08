@@ -10,31 +10,22 @@ export default async function methodPut(
   users: User[],
 ) {
   const userId = url.split('/').pop();
-  const isValid = /\/api\/users\/([^/]+)/.test(url);
 
-  if (!userId || !isValid || !isValidUUID(userId)) {
-    returnData(res, 'Invalid Data', 400);
-    return;
+  if (!userId || !isValidUUID(userId)) {
+    return returnData(res, 'Invalid Data', 400);
   }
 
   let requestBody = '';
 
-  await new Promise<void>((resolve) => {
-    req.on('data', (chunk) => {
-      requestBody += chunk.toString();
-    });
-
-    req.on('end', () => {
-      resolve();
-    });
-  });
+  for await (const chunk of req) {
+    requestBody += chunk;
+  }
 
   const { username, age, hobbies } = JSON.parse(requestBody);
-  const userIndex = users.findIndex((u) => u.id === userId);
+  const userIndex = users.findIndex((user) => user.id === userId);
 
   if (userIndex === -1) {
-    returnData(res, 'User not found', 404);
-    return;
+    return returnData(res, 'User not found', 404);
   }
 
   const updatedUser: User = {
@@ -46,5 +37,5 @@ export default async function methodPut(
 
   users[userIndex] = updatedUser;
 
-  returnData(res, updatedUser, 200);
+  return returnData(res, updatedUser, 200);
 }
