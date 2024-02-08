@@ -8,23 +8,18 @@ export default function methodGet(
   res: ServerResponse,
   users: User[],
 ) {
+  const userId = url.substring(url.lastIndexOf('/') + 1);
+
   if (url === '/api/users') {
     returnData(res, users, 200);
-    return;
-  }
-
-  const userId = url.substring(url.lastIndexOf('/') + 1);
-  const user = users.find((u) => u.id === userId);
-
-  if (!isValidUUID(userId)) {
+  } else if (!isValidUUID(userId)) {
     returnData(res, 'Invalid Data', 400);
-    return;
+  } else {
+    const user = users.find((user) => user.id === userId);
+    if (!user) {
+      returnData(res, 'User not found', 404);
+    } else {
+      returnData(res, user, 200);
+    }
   }
-
-  if (!user) {
-    returnData(res, 'User not found', 404);
-    return;
-  }
-
-  returnData(res, user, 200);
 }
