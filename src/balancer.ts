@@ -8,16 +8,13 @@ import { User } from 'interfaces';
 dotenv.config();
 const port = Number(env.PORT || 4000);
 
-const numWorkers = cpus().length;
-
 if (cluster.isPrimary) {
-  const workers: Worker[] = [];
-  for (let i = 0; i < numWorkers - 1; i++) {
-    workers.push(cluster.fork());
-  }
+  const workers: Worker[] = Array.from({ length: cpus().length - 1 }, () =>
+    cluster.fork(),
+  );
 
   workers.forEach((worker) => {
-    worker.on('message', (message: string | object) => {
+    worker.on('message', (message: string) => {
       if (typeof message === 'string') {
         workers.forEach((e) => e.send(message));
       }
@@ -26,11 +23,10 @@ if (cluster.isPrimary) {
 } else {
   const currentPort = port + (cluster.worker?.id || 1) - 1;
   const users: User[] = [];
-  cluster.worker?.on('message', (message: string | object) => {
+  cluster.worker?.on('message', (message: string) => {
     if (typeof message === 'string') {
-      const parsedUsers = JSON.parse(message) as User[];
       users.length = 0;
-      Array.prototype.push.apply(users, parsedUsers);
+      users.push(...JSON.parse(message));
     }
   });
 
